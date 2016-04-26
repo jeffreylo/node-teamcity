@@ -1,0 +1,17 @@
+{
+  "name": "haibibotto",
+  "version": "0.0.1",
+  "description": "Scrapes the integration server for pending changes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Jeffrey Lo",
+  "license": "MIT",
+  "dependencies": {
+    "request-promise": "3.0.0",
+    "sprintf-js": "1.0.3",
+    "underscore": "1.8.3",
+    "xml2js": "0.4.16"
+  }
+}
