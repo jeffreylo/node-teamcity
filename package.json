@@ -1,6 +1,6 @@
 {
   "name": "haibibotto",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Scrapes the integration server for pending changes.",
   "main": "index.js",
   "scripts": {
