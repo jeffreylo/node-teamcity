@@ -22,10 +22,11 @@ api.pendingChanges().then(function(projectChanges) {
         });
     });
 
-    api.slack.post({
-        'text': `*<${api.Config.changesUrl}|Pending Changes>*`,
-        'attachments': attachments
-    }).then(function(data) {
-        console.dir(data);
-    });
+    console.dir(attachments);
+    // api.slack.post({
+    //     'text': `*<${api.Config.changesUrl}|Pending Changes>*`,
+    //     'attachments': attachments
+    // }).then(function(data) {
+    //     console.dir(data);
+    // });
 });
