@@ -13,8 +13,8 @@ const constants = require('./constants');
 
 const authHeaders = {
     'auth': {
-        'user': config.username,
-        'pass': config.password
+        'user': config.teamcityUsername,
+        'pass': config.teamcityPassword
     }
 };
 
@@ -28,7 +28,7 @@ const api = {
         builds: {
             getLatest: function() {
                 return request(
-                    `${constants.TEAMCITY_API_BASE_URL}/buildTypes/id:${config.build}/builds/`
+                    `${config.teamcityApiUrl}/buildTypes/id:${config.teamcityBuildId}/builds/`
                 ).then(
                     actions.teamcity.builds.onReceiveLatest,
                     actions.error
@@ -37,7 +37,7 @@ const api = {
         },
         change: {
             get: function(changeId) {
-                return request(`${constants.TEAMCITY_API_BASE_URL}/changes/id:${changeId}`).then(
+                return request(`${config.teamcityApiUrl}/changes/id:${changeId}`).then(
                     actions.teamcity.change.onReceive,
                     actions.error
                 );
@@ -45,7 +45,7 @@ const api = {
         },
         changes: {
             get: function(buildId) {
-                return request(`${constants.TEAMCITY_API_BASE_URL}/changes?build=id:${buildId}`).then(
+                return request(`${config.teamcityApiUrl}/changes?build=id:${buildId}`).then(
                     actions.teamcity.changes.onReceive,
                     actions.error
                 );
@@ -54,7 +54,7 @@ const api = {
         pendingChanges: {
             get: function(changeId) {
                 return request(
-                    `${constants.TEAMCITY_API_BASE_URL}/changes?buildType=id:${config.build}&sinceChange=${changeId}`
+                    `${config.teamcityApiUrl}/changes?buildType=id:${config.teamcityBuildId}&sinceChange=${changeId}`
                 ).then(
                     actions.teamcity.pendingChanges.onReceive,
                     actions.error

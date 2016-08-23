@@ -23,10 +23,4 @@ api.pendingChanges().then(function(projectChanges) {
     });
 
     console.dir(attachments);
-    // api.slack.post({
-    //     'text': `*<${api.Config.changesUrl}|Pending Changes>*`,
-    //     'attachments': attachments
-    // }).then(function(data) {
-    //     console.dir(data);
-    // });
 });

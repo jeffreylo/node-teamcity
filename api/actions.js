@@ -2,7 +2,7 @@
 const _ = require('underscore');
 const parseString = require('xml2js').parseString;
 
-const constants = require('./actions');
+const constants = require('./constants');
 
 const getProjectName = function(teamcityVCSURL) {
     var match = teamcityVCSURL.match(/github\.com\:(.*)\.git/);
