@@ -31,6 +31,14 @@ module.exports = {
                     latestBuild =  _.first(builds).$;
                 });
                 return latestBuild;
+            },
+            onReceive: function(xml) {
+                var latestBuild;
+                parseString(xml, function (err, result) {
+                    var builds = result.builds.build;
+                    latestBuild =  _.first(builds).$;
+                });
+                return latestBuild;
             }
         },
         change: {
