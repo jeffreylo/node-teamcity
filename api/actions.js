@@ -1,6 +1,7 @@
 // Global dependencies
 const _ = require('underscore');
 const parseString = require('xml2js').parseString;
+const moment = require('moment');
 
 const constants = require('./constants');
 
@@ -33,12 +34,37 @@ module.exports = {
                 return latestBuild;
             },
             onReceive: function(xml) {
-                var latestBuild;
+                var build = {};
                 parseString(xml, function (err, result) {
-                    var builds = result.builds.build;
-                    latestBuild =  _.first(builds).$;
+                    if (!result.build) {
+                        return;
+                    }
+                    var v = result.build.$;
+                    build.id = v.id;
+                    build.number = v.number;
+                    build.name = (v.buildTypeId.split('_') || [])[0];
+                    build.url = v.webUrl;
+                    build.finished = moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.started = moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.state = v.state;
                 });
-                return latestBuild;
+                return build;
+            }
+        },
+        build: {
+            onReceive: function(xml) {
+                var build = {};
+                parseString(xml, function (err, result) {
+                    var v = result.build.$;
+                    build.id = v.id;
+                    build.number = v.number;
+                    build.name = (v.buildTypeId.split('_') || [])[0];
+                    build.url = v.webUrl;
+                    build.finished = moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.started = moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.state = v.state;
+                });
+                return build;
             }
         },
         change: {

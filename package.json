@@ -9,6 +9,7 @@
   "author": "Jeffrey Lo",
   "license": "MIT",
   "dependencies": {
+    "moment": "2.14.1",
     "request-promise": "3.0.0",
     "sprintf-js": "1.0.3",
     "underscore": "1.8.3",

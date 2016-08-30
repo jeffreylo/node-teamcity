@@ -41,6 +41,12 @@ const api = {
                     actions.teamcity.builds.onReceive,
                     actions.error
                 );
+            },
+            get: function(buildId) {
+                return request(`${config.teamcityApiUrl}/builds/id:${buildId}`).then(
+                    actions.teamcity.build.onReceive,
+                    actions.error
+                );
             }
         },
         change: {
@@ -88,7 +94,14 @@ const api = {
     status: function() {
         return new Promise(function(resolve, reject) {
             api.teamcity.builds.getRunning().then(function(runningBuild) {
-                return resolve(runningBuild);
+                if (runningBuild) {
+                    return resolve(runningBuild);
+                }
+                api.teamcity.builds.getLatest().then(function(latestBuild) {
+                    api.teamcity.builds.get(latestBuild.id).then(function(build) {
+                        return resolve(build);
+                    });
+                });
             });
         });
     }
