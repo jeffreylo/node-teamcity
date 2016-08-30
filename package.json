@@ -1,6 +1,6 @@
 {
   "name": "node-teamcity",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Scrapes the integration server for pending changes.",
   "main": "index.js",
   "scripts": {
