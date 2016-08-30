@@ -19,6 +19,27 @@ const getGithubRepo = function(teamcityVCSURL, version) {
     return version ? `${repoURL}/commit/${version}` : repoURL;
 };
 
+var _mapBuildResponse = (result) => {
+    if (!result.build) {
+        return undefined;
+    }
+
+    var v = result.build.$;
+    var triggeredBy = _.first(_.last(result.build.triggered).user).$;
+    var build = {};
+    build.id = v.id;
+    build.number = v.number;
+    build.name = (v.buildTypeId.split('_') || [])[0];
+    build.url = v.webUrl;
+    build.finished = _.first(result.build.finishDate) ? moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
+    build.started = _.first(result.build.startDate) ? moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
+    build.percentageComplete = result.build.percentageComplete || undefined;
+    build.triggeredByUsername = triggeredBy.username;
+    build.triggeredByFullName = triggeredBy.name;
+    build.state = v.state;
+    return build;
+};
+
 module.exports = {
     error: function(err) {
         console.error(err);
@@ -36,18 +57,7 @@ module.exports = {
             onReceive: function(xml) {
                 var build;
                 parseString(xml, function (err, result) {
-                    if (!result.build) {
-                        return;
-                    }
-                    var v = result.build.$;
-                    build = {};
-                    build.id = v.id;
-                    build.number = v.number;
-                    build.name = (v.buildTypeId.split('_') || [])[0];
-                    build.url = v.webUrl;
-                    build.finished = _.first(result.build.finishDate) ? moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
-                    build.started = _.first(result.build.startDate) ? moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
-                    build.state = v.state;
+                    build = _mapBuildResponse(result);
                 });
                 return build;
             }
@@ -56,15 +66,7 @@ module.exports = {
             onReceive: function(xml) {
                 var build;
                 parseString(xml, function (err, result) {
-                    var v = result.build.$;
-                    build = {};
-                    build.id = v.id;
-                    build.number = v.number;
-                    build.name = (v.buildTypeId.split('_') || [])[0];
-                    build.url = v.webUrl;
-                    build.finished = _.first(result.build.finishDate) ? moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
-                    build.started = _.first(result.build.startDate) ? moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
-                    build.state = v.state;
+                    build = _mapBuildResponse(result);
                 });
                 return build;
             }
