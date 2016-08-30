@@ -1,7 +1,7 @@
 // Global dependencies
 const _ = require('underscore');
 const parseString = require('xml2js').parseString;
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const constants = require('./constants');
 
@@ -34,18 +34,19 @@ module.exports = {
                 return latestBuild;
             },
             onReceive: function(xml) {
-                var build = {};
+                var build;
                 parseString(xml, function (err, result) {
                     if (!result.build) {
                         return;
                     }
                     var v = result.build.$;
+                    build = {};
                     build.id = v.id;
                     build.number = v.number;
                     build.name = (v.buildTypeId.split('_') || [])[0];
                     build.url = v.webUrl;
-                    build.finished = moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").toDate();
-                    build.started = moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.finished = _.first(result.build.finishDate) ? moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
+                    build.started = _.first(result.build.startDate) ? moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
                     build.state = v.state;
                 });
                 return build;
@@ -53,15 +54,16 @@ module.exports = {
         },
         build: {
             onReceive: function(xml) {
-                var build = {};
+                var build;
                 parseString(xml, function (err, result) {
                     var v = result.build.$;
+                    build = {};
                     build.id = v.id;
                     build.number = v.number;
                     build.name = (v.buildTypeId.split('_') || [])[0];
                     build.url = v.webUrl;
-                    build.finished = moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").toDate();
-                    build.started = moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").toDate();
+                    build.finished = _.first(result.build.finishDate) ? moment(_.first(result.build.finishDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
+                    build.started = _.first(result.build.startDate) ? moment(_.first(result.build.startDate), "YYYY-MM-DDTHH:mmZZ").unix() : null;
                     build.state = v.state;
                 });
                 return build;
