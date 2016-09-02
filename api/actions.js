@@ -58,7 +58,7 @@ module.exports = {
                 var build;
                 parseString(xml, function (err, result) {
                     var builds = result.builds.build;
-                    build =  _.first(builds).$;
+                    build = builds ? _.first(builds).$ : undefined;
                 });
                 return build;
             }
