@@ -57,7 +57,8 @@ module.exports = {
             onReceive: function(xml) {
                 var build;
                 parseString(xml, function (err, result) {
-                    build = _mapBuildResponse(result);
+                    var builds = result.builds.build;
+                    build =  _.first(builds).$;
                 });
                 return build;
             }

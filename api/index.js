@@ -95,13 +95,16 @@ const api = {
         return new Promise(function(resolve, reject) {
             api.teamcity.builds.getRunning().then(function(runningBuild) {
                 if (runningBuild) {
-                    return resolve(runningBuild);
-                }
-                api.teamcity.builds.getLatest().then(function(latestBuild) {
-                    api.teamcity.builds.get(latestBuild.id).then(function(build) {
+                    api.teamcity.builds.get(runningBuild.id).then(function(build) {
                         return resolve(build);
                     });
-                });
+                } else {
+                    api.teamcity.builds.getLatest().then(function(latestBuild) {
+                        api.teamcity.builds.get(latestBuild.id).then(function(build) {
+                            return resolve(build);
+                        });
+                    });
+                }
             });
         });
     }
