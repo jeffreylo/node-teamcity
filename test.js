@@ -1,7 +1,7 @@
 const _ = require('underscore');
 const api = require('./api');
 
-// api.pendingChanges().then(function(projectChanges) {
+api.pendingChanges()// .then(function(projectChanges) {
 //     if (_.isEmpty(projectChanges)) {
 //         return;
 //     }

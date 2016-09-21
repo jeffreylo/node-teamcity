@@ -80,6 +80,9 @@ const api = {
         return new Promise(function(resolve, reject) {
             api.teamcity.builds.getLatest().then(function(latestBuild) {
                 api.teamcity.changes.get(latestBuild.id).then(function(latestChange) {
+                    if (!latestChange) {
+                        return undefined;
+                    }
                     api.teamcity.pendingChanges.get(latestChange.id).then(function(pendingChanges) {
                         Promise.all(_.map(pendingChanges, function(v) {
                             return api.teamcity.change.get(v.id);

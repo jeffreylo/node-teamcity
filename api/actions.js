@@ -79,8 +79,9 @@ module.exports = {
                     var v = result.change,
                         vcsName = _.first(v.vcsRootInstance).$.name;
                     change = {};
-                    change.id = v.$.id;
-                    change.version = v.$.version;
+                    changeNode = v.$ || {};
+                    change.id = changeNode.id;
+                    change.version = changeNode.version;
                     change.project = getProjectName(vcsName);
                     change.url = getGithubRepo(vcsName, change.version);
                     change.projectURL = `https://github.com/${change.project}`;
@@ -95,8 +96,10 @@ module.exports = {
             onReceive: function(xml) {
                 var latestChange;
                 parseString(xml, function (err, result) {
-                    var changes = result.changes.change;
-                    latestChange =  _.first(changes).$;
+                    var changesNode = result.changes.$;
+                    if (parseInt(changesNode.count, 10) > 0) {
+                        latestChange =  _.first(result.changes.change).$;
+                    }
                 });
                 return latestChange;
             }
