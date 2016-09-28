@@ -84,10 +84,10 @@ const api = {
                         return undefined;
                     }
                     api.teamcity.pendingChanges.get(latestChange.id).then(function(pendingChanges) {
-                        Promise.all(_.map(pendingChanges, function(v) {
+                        return Promise.all(_.map(pendingChanges, function(v) {
                             return api.teamcity.change.get(v.id);
                         })).then(function(vs) {
-                            resolve(_.groupBy(vs, 'project'));
+                            return resolve(_.groupBy(vs, 'project'));
                         });
                     });
                 });

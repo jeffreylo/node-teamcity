@@ -80,13 +80,14 @@ module.exports = {
                         vcsName = _.first(v.vcsRootInstance).$.name;
                     change = {};
                     changeNode = v.$ || {};
+                    var user = (_.first(v.user) || {}).$ || {};
                     change.id = changeNode.id;
                     change.version = changeNode.version;
                     change.project = getProjectName(vcsName);
                     change.url = getGithubRepo(vcsName, change.version);
                     change.projectURL = `https://github.com/${change.project}`;
-                    change.user = _.first(v.user).$.name;
-                    change.username = _.first(v.user).$.username;
+                    change.user = user.name;
+                    change.username = user.username;
                     change.title = _.first(v.comment).split('\n')[0];
                 });
                 return change;
