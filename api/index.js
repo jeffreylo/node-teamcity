@@ -81,7 +81,7 @@ const api = {
             api.teamcity.builds.getLatest().then(function(latestBuild) {
                 api.teamcity.changes.get(latestBuild.id).then(function(latestChange) {
                     if (!latestChange) {
-                        return undefined;
+                        return reject();
                     }
                     api.teamcity.pendingChanges.get(latestChange.id).then(function(pendingChanges) {
                         return Promise.all(_.map(pendingChanges, function(v) {
